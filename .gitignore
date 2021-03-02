@@ -1,0 +1,14 @@
+gradle/
+.gradle/
+
+target/
+build/
+*.gch
+
+# IntelliJ stuff
+*.iml
+*.ipr
+*.iws
+.idea/*
+!.idea/sqldialects.xml
+!.idea/dictionaries/*

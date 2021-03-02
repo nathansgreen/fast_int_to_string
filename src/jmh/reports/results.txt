@@ -1,0 +1,53 @@
+#
+# All results were run on the same machine using OpenJDK 11.0.10.
+#
+# Despite some variability, the overall picture is pretty clear:
+# Integer.toUnsignedString is faster than this algorithm, in spite of
+# the fact that it must do an allocation to produce a String object.
+#
+Benchmark                                     Mode  Cnt   Score   Error  Units
+IntegerToStringBench.integerToString_10Digit  avgt   50  23.994 ± 0.568  ns/op
+IntegerToStringBench.integerToString_8Digit   avgt   50  19.866 ± 0.282  ns/op
+IntegerToStringBench.integerToString_6Digit   avgt   50  21.540 ± 0.889  ns/op
+IntegerToStringBench.integerToString_4Digit   avgt   50  20.884 ± 0.960  ns/op
+#
+# Samples of Long.toUnsignedString show somewhat worse performance
+# compared to Integer.toUnsignedString until the number of digits
+# drops to 6. But this is still better than this project's algorithm.
+#
+Benchmark                               Mode  Cnt   Score   Error  Units
+LongToStringBench.longToString_19Digit  avgt   50  30.506 ± 2.521  ns/op
+LongToStringBench.longToString_15Digit  avgt   50  29.247 ± 2.412  ns/op
+LongToStringBench.longToString_12Digit  avgt   50  27.732 ± 1.263  ns/op
+LongToStringBench.longToString_10Digit  avgt   50  28.494 ± 3.003  ns/op
+LongToStringBench.longToString_8Digit   avgt   50  22.698 ± 1.062  ns/op
+LongToStringBench.longToString_6Digit   avgt   50  21.654 ± 1.658  ns/op
+LongToStringBench.longToString_4Digit   avgt   50  23.333 ± 0.782  ns/op
+#
+# 10-digit numbers are obviously the most time-consuming, worst-case
+# runs, so we show them first.
+#
+Benchmark                                     Mode  Cnt   Score   Error  Units
+IntToByteBufferBench.uint32ToAscii_10Digit    avgt   20  54.860 ± 6.283  ns/op
+IntToByteBufferBench.uint32ToAscii_10Digit    avgt   50  55.327 ± 1.586  ns/op
+IntToByteBufferBench.uint32ToAscii_10Digit    avgt   50  55.156 ± 1.309  ns/op
+IntToByteBufferBench.uint32ToAscii_10Digit    avgt   50  55.156 ± 1.309  ns/op
+IntToByteBufferBench.uint32ToAscii_10Digit    avgt   50  54.531 ± 1.923  ns/op
+# 8-digit numbers move slightly faster
+IntToByteBufferBench.uint32ToAscii_8Digit     avgt   50  51.597 ± 1.571  ns/op
+IntToByteBufferBench.uint32ToAscii_8Digit     avgt   50  58.074 ± 3.493  ns/op
+IntToByteBufferBench.uint32ToAscii_8Digit     avgt   50  45.572 ± 0.584  ns/op
+IntToByteBufferBench.uint32ToAscii_8Digit     avgt   50  44.874 ± 0.471  ns/op
+# 6-digit numbers are noticeably faster
+IntToByteBufferBench.uint32ToAscii_6Digit     avgt   50  30.350 ± 0.481  ns/op
+# 4-digit numbers take under half the time of 10-digit numbers
+IntToByteBufferBench.uint32ToAscii_4Digit     avgt   50  25.457 ± 0.493  ns/op
+#
+# This last set of runs was done after a bounds check was added to prevent
+# polluting the buffer with partial data. The bounds check adds very little
+# detectable overhead.
+#
+IntToByteBufferBench.uint32ToAscii_10Digit    avgt   50  52.538 ± 2.455  ns/op
+IntToByteBufferBench.uint32ToAscii_8Digit     avgt   50  45.180 ± 1.171  ns/op
+IntToByteBufferBench.uint32ToAscii_6Digit     avgt   50  31.884 ± 0.983  ns/op
+IntToByteBufferBench.uint32ToAscii_4Digit     avgt   50  24.089 ± 0.381  ns/op

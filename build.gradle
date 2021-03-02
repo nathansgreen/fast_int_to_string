@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "me.champeau.gradle:jmh-gradle-plugin:0.5.3"
+    }
+}
+
+plugins {
+    id 'java-library'
+    id 'me.champeau.gradle.jmh' version "0.5.3"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    google()
+}
+
+group 'com.github.nathansgreen'
+version '0.2.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:1.7.0'
+
+    runtimeOnly 'org.openjdk.jmh:jmh-core:1.25'
+    runtimeOnly 'org.openjdk.jmh:jmh-generator-annprocess:1.25'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jmh {
+    include = ['.*']
+}
